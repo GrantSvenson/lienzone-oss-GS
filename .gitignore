@@ -1,19 +1,32 @@
+# Dependencies
 node_modules
+
+# Build output
 .next
 dist
 out
 build
 .open-next
+coverage
+*.tsbuildinfo
+next-env.d.ts
 
+# Local configuration and secrets
 .env
 .env.*
 !.env.example
 !.env.local.example
 
+# Logs and caches
 *.log
-*.tsbuildinfo
-next-env.d.ts
-.DS_Store
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.turbo
+
+# Platform and deploy artifacts
 .vercel
-coverage
+.DS_Store
+
+# Local app state and uploaded document bytes
 backend/data
