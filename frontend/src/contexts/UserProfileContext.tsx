@@ -21,6 +21,7 @@ interface UserProfile {
     tabularModel: string;
     claudeApiKey: string | null;
     geminiApiKey: string | null;
+    openrouterApiKey: string | null;
 }
 
 interface UserProfileContextType {
@@ -33,7 +34,7 @@ interface UserProfileContextType {
         value: string,
     ) => Promise<boolean>;
     updateApiKey: (
-        provider: "claude" | "gemini",
+        provider: "claude" | "gemini" | "openrouter",
         value: string | null,
     ) => Promise<boolean>;
     reloadProfile: () => Promise<void>;
@@ -77,6 +78,7 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
                     tabularModel: "claude-sonnet-4-6",
                     claudeApiKey: null,
                     geminiApiKey: null,
+                    openrouterApiKey: null,
                 });
                 return;
             }
@@ -111,6 +113,7 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
                         data.tabular_model || "claude-sonnet-4-6",
                     claudeApiKey: data.claude_api_key ?? null,
                     geminiApiKey: data.gemini_api_key ?? null,
+                    openrouterApiKey: data.openrouter_api_key ?? null,
                 });
 
                 // 2. Update database in background if needed
@@ -148,6 +151,7 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
                 tabularModel: "claude-sonnet-4-6",
                 claudeApiKey: null,
                 geminiApiKey: null,
+                openrouterApiKey: null,
             });
         } finally {
             setLoading(false);
@@ -245,14 +249,20 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
 
     const updateApiKey = useCallback(
         async (
-            provider: "claude" | "gemini",
+            provider: "claude" | "gemini" | "openrouter",
             value: string | null,
         ): Promise<boolean> => {
             if (!user) return false;
-            const dbField =
-                provider === "claude" ? "claude_api_key" : "gemini_api_key";
-            const stateField =
-                provider === "claude" ? "claudeApiKey" : "geminiApiKey";
+            const dbField = (() => {
+                if (provider === "claude") return "claude_api_key";
+                if (provider === "gemini") return "gemini_api_key";
+                return "openrouter_api_key";
+            })();
+            const stateField = (() => {
+                if (provider === "claude") return "claudeApiKey";
+                if (provider === "gemini") return "geminiApiKey";
+                return "openrouterApiKey";
+            })();
             const normalized = value?.trim() ? value.trim() : null;
             try {
                 const { error } = await supabase

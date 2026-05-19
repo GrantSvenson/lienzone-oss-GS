@@ -9,15 +9,18 @@ export const GEMINI_MAIN_MODELS = [
     "gemini-3.1-pro-preview",
     "gemini-3-flash-preview",
 ] as const;
+export const OPENROUTER_MAIN_MODELS = ["openrouter/auto"] as const;
 
 // Mid-tier (used for tabular review) — user picks one in account settings.
 export const CLAUDE_MID_MODELS = ["claude-sonnet-4-6"] as const;
 export const GEMINI_MID_MODELS = ["gemini-3-flash-preview"] as const;
+export const OPENROUTER_MID_MODELS = ["openrouter/auto"] as const;
 
 // Low-tier (used for title generation, lightweight extractions) — user picks
 // one in account settings.
 export const CLAUDE_LOW_MODELS = ["claude-haiku-4-5"] as const;
 export const GEMINI_LOW_MODELS = ["gemini-3.1-flash-lite-preview"] as const;
+export const OPENROUTER_LOW_MODELS = ["openrouter/auto"] as const;
 
 export const DEFAULT_MAIN_MODEL = "claude-sonnet-4-6";
 export const DEFAULT_TITLE_MODEL = "claude-haiku-4-5";
@@ -26,10 +29,13 @@ export const DEFAULT_TABULAR_MODEL = "claude-sonnet-4-6";
 const ALL_MODELS = new Set<string>([
     ...CLAUDE_MAIN_MODELS,
     ...GEMINI_MAIN_MODELS,
+    ...OPENROUTER_MAIN_MODELS,
     ...CLAUDE_MID_MODELS,
     ...GEMINI_MID_MODELS,
+    ...OPENROUTER_MID_MODELS,
     ...CLAUDE_LOW_MODELS,
     ...GEMINI_LOW_MODELS,
+    ...OPENROUTER_LOW_MODELS,
 ]);
 
 // ---------------------------------------------------------------------------
@@ -39,6 +45,7 @@ const ALL_MODELS = new Set<string>([
 export function providerForModel(model: string): Provider {
     if (model.startsWith("claude")) return "claude";
     if (model.startsWith("gemini")) return "gemini";
+    if (model.includes("/")) return "openrouter";
     throw new Error(`Unknown model id: ${model}`);
 }
 
