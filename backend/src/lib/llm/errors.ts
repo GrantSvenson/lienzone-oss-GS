@@ -27,8 +27,11 @@ export function requireApiKey(
 
 export function userFacingLlmError(error: unknown): string {
     if (error instanceof LlmConfigurationError) return error.message;
-    if (error instanceof Error && error.message.includes("Insufficient credits")) {
-        return error.message;
+    if (
+        error instanceof Error &&
+        error.message.toLowerCase().includes("insufficient credits")
+    ) {
+        return "OpenRouter accepted the API key, but says the key being used does not have enough available credits. Check that the saved API key belongs to the funded OpenRouter account, then try again.";
     }
     return "The selected model provider returned an error. Please check your API key, provider account, and model selection, then try again.";
 }
