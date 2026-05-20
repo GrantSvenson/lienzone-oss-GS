@@ -4,6 +4,7 @@ import type {
     NormalizedToolCall,
     OpenAIToolSchema,
 } from "./types";
+import { requireApiKey } from "./errors";
 
 type OpenRouterToolCall = {
     id: string;
@@ -45,11 +46,7 @@ type OpenRouterResponse = {
 const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
 
 function getApiKey(override?: string | null): string {
-    const key = override?.trim() || process.env.OPENROUTER_API_KEY || "";
-    if (!key) {
-        throw new Error("OpenRouter API key is missing");
-    }
-    return key;
+    return requireApiKey("OpenRouter", override, process.env.OPENROUTER_API_KEY);
 }
 
 function requestHeaders(apiKey: string): Record<string, string> {

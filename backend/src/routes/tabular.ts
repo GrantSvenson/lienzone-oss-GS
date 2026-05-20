@@ -11,6 +11,7 @@ import {
     type TabularCellStore,
 } from "../lib/chatTools";
 import { completeText, streamChatWithTools } from "../lib/llm";
+import { userFacingLlmError } from "../lib/llm/errors";
 import { getUserApiKeys, getUserModelSettings } from "../lib/userSettings";
 import {
     checkProjectAccess,
@@ -896,7 +897,7 @@ tabularRouter.post("/:reviewId/generate", requireAuth, async (req, res) => {
         console.error("[tabular/generate] stream error", err);
         try {
             write(
-                `data: ${JSON.stringify({ type: "error", message: String(err) })}\n\ndata: [DONE]\n\n`,
+                `data: ${JSON.stringify({ type: "error", message: userFacingLlmError(err) })}\n\ndata: [DONE]\n\n`,
             );
         } catch {
             /* ignore */
@@ -1286,7 +1287,7 @@ tabularRouter.post("/:reviewId/chat", requireAuth, async (req, res) => {
         console.error("[tabular/chat] error", err);
         try {
             write(
-                `data: ${JSON.stringify({ type: "error", message: String(err) })}\n\n`,
+                `data: ${JSON.stringify({ type: "error", message: userFacingLlmError(err) })}\n\n`,
             );
             write("data: [DONE]\n\n");
         } catch {

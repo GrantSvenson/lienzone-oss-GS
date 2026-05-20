@@ -22,9 +22,9 @@ export const CLAUDE_LOW_MODELS = ["claude-haiku-4-5"] as const;
 export const GEMINI_LOW_MODELS = ["gemini-3.1-flash-lite-preview"] as const;
 export const OPENROUTER_LOW_MODELS = ["openrouter/auto"] as const;
 
-export const DEFAULT_MAIN_MODEL = "claude-sonnet-4-6";
-export const DEFAULT_TITLE_MODEL = "claude-haiku-4-5";
-export const DEFAULT_TABULAR_MODEL = "claude-sonnet-4-6";
+export const DEFAULT_MAIN_MODEL = "openrouter/auto";
+export const DEFAULT_TITLE_MODEL = "openrouter/auto";
+export const DEFAULT_TABULAR_MODEL = "openrouter/auto";
 
 const ALL_MODELS = new Set<string>([
     ...CLAUDE_MAIN_MODELS,

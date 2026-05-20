@@ -9,6 +9,7 @@ import type {
     NormalizedToolResult,
 } from "./types";
 import { toClaudeTools } from "./tools";
+import { requireApiKey } from "./errors";
 
 const RAW_STREAM_LOG_PATH = path.resolve(
     process.cwd(),
@@ -28,7 +29,7 @@ type NativeMessage = {
 const MAX_TOKENS = 16384;
 
 function client(override?: string | null): Anthropic {
-    const apiKey = override?.trim() || process.env.ANTHROPIC_API_KEY || "";
+    const apiKey = requireApiKey("Anthropic (Claude)", override, process.env.ANTHROPIC_API_KEY);
     return new Anthropic({ apiKey });
 }
 

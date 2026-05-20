@@ -623,7 +623,7 @@ export function TRChatPanel({
         openrouterApiKeyConfigured:
             profile?.openrouterApiKeyConfigured ?? false,
     };
-    const currentModel = profile?.tabularModel ?? "claude-sonnet-4-6";
+    const currentModel = profile?.tabularModel ?? "openrouter/auto";
     const [apiKeyModalProvider, setApiKeyModalProvider] =
         useState<ModelProvider | null>(null);
     const [chats, setChats] = useState<TRChat[]>([]);

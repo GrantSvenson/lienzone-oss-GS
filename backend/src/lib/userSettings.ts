@@ -5,6 +5,7 @@ import {
     DEFAULT_TABULAR_MODEL,
     type UserApiKeys,
 } from "./llm";
+import { hasUsableApiKey } from "./llm/errors";
 
 export type UserModelSettings = {
     title_model: string;
@@ -15,19 +16,14 @@ export type UserModelSettings = {
 // Title generation is a lightweight task — always routed to the cheapest model
 // of whichever provider the user has keys for. When users only configure
 // OpenRouter, use the OpenRouter low-tier model.
-function hasConfiguredKey(value: string | null | undefined): boolean {
-    const key = value?.trim();
-    return !!key && key !== "your-anthropic-key";
-}
-
 function resolveTitleModel(apiKeys: UserApiKeys): string {
-    if (hasConfiguredKey(apiKeys.openrouter) || hasConfiguredKey(process.env.OPENROUTER_API_KEY)) {
+    if (hasUsableApiKey(apiKeys.openrouter) || hasUsableApiKey(process.env.OPENROUTER_API_KEY)) {
         return "openrouter/auto";
     }
-    if (hasConfiguredKey(apiKeys.gemini) || hasConfiguredKey(process.env.GEMINI_API_KEY)) {
+    if (hasUsableApiKey(apiKeys.gemini) || hasUsableApiKey(process.env.GEMINI_API_KEY)) {
         return "gemini-3.1-flash-lite-preview";
     }
-    if (hasConfiguredKey(apiKeys.claude) || hasConfiguredKey(process.env.ANTHROPIC_API_KEY)) {
+    if (hasUsableApiKey(apiKeys.claude) || hasUsableApiKey(process.env.ANTHROPIC_API_KEY)) {
         return "claude-haiku-4-5";
     }
     return DEFAULT_TITLE_MODEL;

@@ -39,7 +39,7 @@ export default function ModelsAndApiKeysPage() {
                         <TabularModelDropdown
                             value={
                                 profile?.tabularModel ??
-                                "claude-sonnet-4-6"
+                                "openrouter/auto"
                             }
                             apiKeys={{
                                 claudeApiKey: profile?.claudeApiKey ?? null,

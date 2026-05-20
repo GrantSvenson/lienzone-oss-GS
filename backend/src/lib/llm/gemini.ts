@@ -5,6 +5,7 @@ import type {
     NormalizedToolCall,
 } from "./types";
 import { toGeminiTools } from "./tools";
+import { requireApiKey } from "./errors";
 
 type GeminiPart = {
     text?: string;
@@ -29,7 +30,7 @@ type GeminiContent = {
 };
 
 function client(override?: string | null): GoogleGenAI {
-    const apiKey = override?.trim() || process.env.GEMINI_API_KEY || "";
+    const apiKey = requireApiKey("Google (Gemini)", override, process.env.GEMINI_API_KEY);
     return new GoogleGenAI({ apiKey });
 }
 

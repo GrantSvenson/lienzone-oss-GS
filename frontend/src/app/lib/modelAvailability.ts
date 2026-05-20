@@ -24,7 +24,7 @@ export function isModelAvailable(
     const provider = getModelProvider(modelId);
     if (!provider) return false;
     if (provider === "claude") {
-        return true;
+        return !!apiKeys.claudeApiKey?.trim() || !!apiKeys.claudeApiKeyConfigured;
     }
     if (provider === "openrouter") {
         return (
@@ -46,7 +46,9 @@ export function isProviderAvailable(
         openrouterApiKeyConfigured?: boolean;
     },
 ): boolean {
-    if (provider === "claude") return true;
+    if (provider === "claude") {
+        return !!apiKeys.claudeApiKey?.trim() || !!apiKeys.claudeApiKeyConfigured;
+    }
     if (provider === "openrouter") {
         return (
             !!apiKeys.openrouterApiKey?.trim() ||

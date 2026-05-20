@@ -78,7 +78,7 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
                     creditsResetDate: defaultResetDateStr,
                     creditsRemaining: MONTHLY_CREDIT_LIMIT,
                     tier: "Free",
-                    tabularModel: "claude-sonnet-4-6",
+                    tabularModel: "openrouter/auto",
                     claudeApiKey: null,
                     claudeApiKeyConfigured: false,
                     geminiApiKey: null,
@@ -116,7 +116,7 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
                     creditsRemaining: creditsRemaining,
                     tier: data.tier || "Free",
                     tabularModel:
-                        data.tabular_model || "claude-sonnet-4-6",
+                        data.tabular_model || "openrouter/auto",
                     claudeApiKey: data.claude_api_key ?? null,
                     claudeApiKeyConfigured:
                         data.claude_api_key_configured ?? false,
@@ -160,7 +160,7 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
                 creditsResetDate: futureResetDate.toISOString(),
                 creditsRemaining: 999999, // temporarily unlimited
                 tier: "Free",
-                tabularModel: "claude-sonnet-4-6",
+                tabularModel: "openrouter/auto",
                 claudeApiKey: null,
                 claudeApiKeyConfigured: false,
                 geminiApiKey: null,

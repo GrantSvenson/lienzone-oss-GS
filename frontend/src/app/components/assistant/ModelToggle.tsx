@@ -30,7 +30,7 @@ export const MODELS: ModelOption[] = [
     },
 ];
 
-export const DEFAULT_MODEL_ID = "claude-sonnet-4-6";
+export const DEFAULT_MODEL_ID = "openrouter/auto";
 
 export const ALLOWED_MODEL_IDS = new Set(MODELS.map((m) => m.id));
 

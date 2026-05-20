@@ -11,6 +11,7 @@ import {
     type ChatMessage,
 } from "../lib/chatTools";
 import { completeText } from "../lib/llm";
+import { userFacingLlmError } from "../lib/llm/errors";
 import { getUserApiKeys, getUserModelSettings } from "../lib/userSettings";
 import { checkProjectAccess } from "../lib/access";
 
@@ -475,7 +476,7 @@ chatRouter.post("/", requireAuth, async (req, res) => {
         console.error("[chat/stream] error:", err);
         try {
             write(
-                `data: ${JSON.stringify({ type: "error", message: "Stream error" })}\n\n`,
+                `data: ${JSON.stringify({ type: "error", message: userFacingLlmError(err) })}\n\n`,
             );
             write("data: [DONE]\n\n");
         } catch {

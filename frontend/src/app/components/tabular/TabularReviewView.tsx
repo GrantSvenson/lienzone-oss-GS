@@ -96,7 +96,7 @@ export function TRView({ reviewId, projectId }: Props) {
         openrouterApiKeyConfigured:
             profile?.openrouterApiKeyConfigured ?? false,
     };
-    const tabularModel = profile?.tabularModel ?? "claude-sonnet-4-6";
+    const tabularModel = profile?.tabularModel ?? "openrouter/auto";
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);

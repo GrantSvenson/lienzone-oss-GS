@@ -63,7 +63,7 @@ const TABLES = [
 const DEFAULT_LOCAL_USER_ID = process.env.LOCAL_USER_ID ?? "local-user";
 const DEFAULT_LOCAL_USER_EMAIL =
   process.env.LOCAL_USER_EMAIL?.toLowerCase() ?? "local@mike.local";
-const DEFAULT_TABULAR_MODEL = "claude-sonnet-4-6";
+const DEFAULT_TABULAR_MODEL = "openrouter/auto";
 
 function dataDir(): string {
   return path.resolve(process.env.LOCAL_DATA_DIR ?? path.join(process.cwd(), "data"));

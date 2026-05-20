@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { requireAuth } from "../middleware/auth";
 import { createServerSupabase } from "../lib/supabase";
+import { hasUsableApiKey } from "../lib/llm/errors";
 
 export const userRouter = Router();
 
@@ -20,11 +21,11 @@ function hasConfiguredKey(
   profileKey: unknown,
   envKey: string | undefined,
 ): boolean {
-  const value =
+  const key =
     typeof profileKey === "string" && profileKey.trim()
       ? profileKey.trim()
       : envKey?.trim();
-  return !!value && value !== "your-anthropic-key";
+  return hasUsableApiKey(key);
 }
 
 function withProviderKeyConfig(data: Record<string, unknown> | null) {
