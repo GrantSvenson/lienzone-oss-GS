@@ -45,8 +45,11 @@ interface Props {
     onChange: (id: string) => void;
     apiKeys?: {
         claudeApiKey: string | null;
+        claudeApiKeyConfigured?: boolean;
         geminiApiKey: string | null;
+        geminiApiKeyConfigured?: boolean;
         openrouterApiKey: string | null;
+        openrouterApiKeyConfigured?: boolean;
     };
 }
 

@@ -20,8 +20,11 @@ interface UserProfile {
     tier: string;
     tabularModel: string;
     claudeApiKey: string | null;
+    claudeApiKeyConfigured: boolean;
     geminiApiKey: string | null;
+    geminiApiKeyConfigured: boolean;
     openrouterApiKey: string | null;
+    openrouterApiKeyConfigured: boolean;
 }
 
 interface UserProfileContextType {
@@ -77,8 +80,11 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
                     tier: "Free",
                     tabularModel: "claude-sonnet-4-6",
                     claudeApiKey: null,
+                    claudeApiKeyConfigured: false,
                     geminiApiKey: null,
+                    geminiApiKeyConfigured: false,
                     openrouterApiKey: null,
+                    openrouterApiKeyConfigured: false,
                 });
                 return;
             }
@@ -112,8 +118,14 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
                     tabularModel:
                         data.tabular_model || "claude-sonnet-4-6",
                     claudeApiKey: data.claude_api_key ?? null,
+                    claudeApiKeyConfigured:
+                        data.claude_api_key_configured ?? false,
                     geminiApiKey: data.gemini_api_key ?? null,
+                    geminiApiKeyConfigured:
+                        data.gemini_api_key_configured ?? false,
                     openrouterApiKey: data.openrouter_api_key ?? null,
+                    openrouterApiKeyConfigured:
+                        data.openrouter_api_key_configured ?? false,
                 });
 
                 // 2. Update database in background if needed
@@ -150,8 +162,11 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
                 tier: "Free",
                 tabularModel: "claude-sonnet-4-6",
                 claudeApiKey: null,
+                claudeApiKeyConfigured: false,
                 geminiApiKey: null,
+                geminiApiKeyConfigured: false,
                 openrouterApiKey: null,
+                openrouterApiKeyConfigured: false,
             });
         } finally {
             setLoading(false);
@@ -263,9 +278,10 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
                 if (provider === "gemini") return "geminiApiKey";
                 return "openrouterApiKey";
             })();
+            const configuredField = `${stateField}Configured`;
             const normalized = value?.trim() ? value.trim() : null;
             try {
-                const { error } = await supabase
+                const { data, error } = await supabase
                     .from("user_profiles")
                     .update({
                         [dbField]: normalized,
@@ -274,7 +290,16 @@ export function UserProfileProvider({ children }: { children: ReactNode }) {
                     .eq("user_id", user.id);
                 if (error) throw error;
                 setProfile((prev) =>
-                    prev ? { ...prev, [stateField]: normalized } : null,
+                    prev
+                        ? {
+                              ...prev,
+                              [stateField]: normalized,
+                              [configuredField]:
+                                  (data?.[`${dbField}_configured`] as
+                                      | boolean
+                                      | undefined) ?? !!normalized,
+                          }
+                        : null,
                 );
                 return true;
             } catch {

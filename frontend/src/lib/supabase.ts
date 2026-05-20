@@ -17,8 +17,11 @@ type LooseData = unknown[] &
         tier: string;
         tabular_model: string;
         claude_api_key: string | null;
+        claude_api_key_configured?: boolean;
         gemini_api_key: string | null;
+        gemini_api_key_configured?: boolean;
         openrouter_api_key: string | null;
+        openrouter_api_key_configured?: boolean;
     };
 
 type LocalResult = {

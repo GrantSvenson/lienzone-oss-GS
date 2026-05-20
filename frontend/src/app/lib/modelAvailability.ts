@@ -14,28 +14,46 @@ export function isModelAvailable(
     modelId: string,
     apiKeys: {
         claudeApiKey: string | null;
+        claudeApiKeyConfigured?: boolean;
         geminiApiKey: string | null;
+        geminiApiKeyConfigured?: boolean;
         openrouterApiKey: string | null;
+        openrouterApiKeyConfigured?: boolean;
     },
 ): boolean {
     const provider = getModelProvider(modelId);
     if (!provider) return false;
-    if (provider === "claude") return true;
-    if (provider === "openrouter") return !!apiKeys.openrouterApiKey?.trim();
-    return !!apiKeys.geminiApiKey?.trim();
+    if (provider === "claude") {
+        return true;
+    }
+    if (provider === "openrouter") {
+        return (
+            !!apiKeys.openrouterApiKey?.trim() ||
+            !!apiKeys.openrouterApiKeyConfigured
+        );
+    }
+    return !!apiKeys.geminiApiKey?.trim() || !!apiKeys.geminiApiKeyConfigured;
 }
 
 export function isProviderAvailable(
     provider: ModelProvider,
     apiKeys: {
         claudeApiKey: string | null;
+        claudeApiKeyConfigured?: boolean;
         geminiApiKey: string | null;
+        geminiApiKeyConfigured?: boolean;
         openrouterApiKey: string | null;
+        openrouterApiKeyConfigured?: boolean;
     },
 ): boolean {
     if (provider === "claude") return true;
-    if (provider === "openrouter") return !!apiKeys.openrouterApiKey?.trim();
-    return !!apiKeys.geminiApiKey?.trim();
+    if (provider === "openrouter") {
+        return (
+            !!apiKeys.openrouterApiKey?.trim() ||
+            !!apiKeys.openrouterApiKeyConfigured
+        );
+    }
+    return !!apiKeys.geminiApiKey?.trim() || !!apiKeys.geminiApiKeyConfigured;
 }
 
 export function providerLabel(provider: ModelProvider): string {

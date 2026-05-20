@@ -455,8 +455,11 @@ function TRChatInput({
     onModelChange: (id: string) => void;
     apiKeys: {
         claudeApiKey: string | null;
+        claudeApiKeyConfigured?: boolean;
         geminiApiKey: string | null;
+        geminiApiKeyConfigured?: boolean;
         openrouterApiKey: string | null;
+        openrouterApiKeyConfigured?: boolean;
     };
 }) {
     const [value, setValue] = useState("");
@@ -613,8 +616,12 @@ export function TRChatPanel({
     const { profile, updateModelPreference } = useUserProfile();
     const apiKeys = {
         claudeApiKey: profile?.claudeApiKey ?? null,
+        claudeApiKeyConfigured: profile?.claudeApiKeyConfigured ?? false,
         geminiApiKey: profile?.geminiApiKey ?? null,
+        geminiApiKeyConfigured: profile?.geminiApiKeyConfigured ?? false,
         openrouterApiKey: profile?.openrouterApiKey ?? null,
+        openrouterApiKeyConfigured:
+            profile?.openrouterApiKeyConfigured ?? false,
     };
     const currentModel = profile?.tabularModel ?? "claude-sonnet-4-6";
     const [apiKeyModalProvider, setApiKeyModalProvider] =

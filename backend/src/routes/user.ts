@@ -16,6 +16,36 @@ const PROFILE_UPDATE_FIELDS = new Set([
   "updated_at",
 ]);
 
+function hasConfiguredKey(
+  profileKey: unknown,
+  envKey: string | undefined,
+): boolean {
+  const value =
+    typeof profileKey === "string" && profileKey.trim()
+      ? profileKey.trim()
+      : envKey?.trim();
+  return !!value && value !== "your-anthropic-key";
+}
+
+function withProviderKeyConfig(data: Record<string, unknown> | null) {
+  if (!data) return data;
+  return {
+    ...data,
+    claude_api_key_configured: hasConfiguredKey(
+      data.claude_api_key,
+      process.env.ANTHROPIC_API_KEY,
+    ),
+    gemini_api_key_configured: hasConfiguredKey(
+      data.gemini_api_key,
+      process.env.GEMINI_API_KEY,
+    ),
+    openrouter_api_key_configured: hasConfiguredKey(
+      data.openrouter_api_key,
+      process.env.OPENROUTER_API_KEY,
+    ),
+  };
+}
+
 // POST /user/profile
 userRouter.post("/profile", requireAuth, async (req, res) => {
   const userId = res.locals.userId as string;
@@ -46,7 +76,7 @@ userRouter.get("/profile", requireAuth, async (_req, res) => {
     .eq("user_id", userId)
     .single();
   if (error) return void res.status(500).json({ detail: error.message });
-  res.json(data);
+  res.json(withProviderKeyConfig(data));
 });
 
 // PATCH /user/profile
@@ -72,7 +102,7 @@ userRouter.patch("/profile", requireAuth, async (req, res) => {
     .select("*")
     .single();
   if (error) return void res.status(500).json({ detail: error.message });
-  res.json(data);
+  res.json(withProviderKeyConfig(data));
 });
 
 // DELETE /user/account

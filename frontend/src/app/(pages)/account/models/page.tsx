@@ -43,9 +43,16 @@ export default function ModelsAndApiKeysPage() {
                             }
                             apiKeys={{
                                 claudeApiKey: profile?.claudeApiKey ?? null,
+                                claudeApiKeyConfigured:
+                                    profile?.claudeApiKeyConfigured ?? false,
                                 geminiApiKey: profile?.geminiApiKey ?? null,
+                                geminiApiKeyConfigured:
+                                    profile?.geminiApiKeyConfigured ?? false,
                                 openrouterApiKey:
                                     profile?.openrouterApiKey ?? null,
+                                openrouterApiKeyConfigured:
+                                    profile?.openrouterApiKeyConfigured ??
+                                    false,
                             }}
                             onChange={(id) =>
                                 updateModelPreference("tabularModel", id)
@@ -112,8 +119,11 @@ function TabularModelDropdown({
     onChange: (id: string) => void;
     apiKeys: {
         claudeApiKey: string | null;
+        claudeApiKeyConfigured?: boolean;
         geminiApiKey: string | null;
+        geminiApiKeyConfigured?: boolean;
         openrouterApiKey: string | null;
+        openrouterApiKeyConfigured?: boolean;
     };
 }) {
     const [isOpen, setIsOpen] = useState(false);
